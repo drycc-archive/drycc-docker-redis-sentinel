@@ -19,7 +19,7 @@ $ docker run --name redis-sentinel -e REDIS_MASTER_HOST=redis quay.io/drycc-addo
 ### Docker Compose
 
 ```console
-$ curl -sSL https://raw.githubusercontent.com/drycc/drycc-docker-redis-sentinel/main/docker-compose.yml > docker-compose.yml
+$ curl -sSL https://raw.githubusercontent.com/drycc-addons/drycc-docker-redis-sentinel/main/docker-compose.yml > docker-compose.yml
 $ docker-compose up -d
 ```
 
@@ -40,7 +40,7 @@ $ docker pull quay.io/drycc-addons/redis-sentinel:[TAG]
 To use a specific version, you can pull a versioned tag. You can view the [list of available versions](https://quay.io/repository/drycc-addons/redis-sentinel?tab=tags) in the Container Image Registry.
 
 ```console
-$ docker pull bitnami/redis-sentinel:[TAG]
+$ docker pull quay.io/drycc-addons/redis-sentinel:[TAG]
 ```
 
 If you wish, you can also build the image yourself.
@@ -218,7 +218,6 @@ When enabling TLS, conventional standard traffic is disabled by default. However
         -e REDIS_SENTINEL_TLS_CERT_FILE=/opt/bitnami/redis/certs/redis.crt \
         -e REDIS_SENTINEL_TLS_KEY_FILE=/opt/bitnami/redis/certs/redis.key \
         -e REDIS_SENTINEL_TLS_CA_FILE=/opt/bitnami/redis/certs/redisCA.crt \
-        bitnami/redis-cluster:latest
         quay.io/drycc-addons/redis-sentinel:[TAG]
     ```
 
@@ -230,20 +229,20 @@ When enabling TLS, conventional standard traffic is disabled by default. However
         environment:
           ...
           - REDIS_SENTINEL_TLS_ENABLED=yes
-          - REDIS_SENTINEL_TLS_CERT_FILE=/opt/bitnami/redis/certs/redis.crt
-          - REDIS_SENTINEL_TLS_KEY_FILE=/opt/bitnami/redis/certs/redis.key
-          - REDIS_SENTINEL_TLS_CA_FILE=/opt/bitnami/redis/certs/redisCA.crt
+          - REDIS_SENTINEL_TLS_CERT_FILE=/opt/drycc/redis/certs/redis.crt
+          - REDIS_SENTINEL_TLS_KEY_FILE=/opt/drycc/redis/certs/redis.key
+          - REDIS_SENTINEL_TLS_CA_FILE=/opt/drycc/redis/certs/redisCA.crt
         ...
         volumes:
-          - /path/to/certs:/opt/bitnami/redis/certs
+          - /path/to/certs:/opt/drycc/redis/certs
         ...
       ...
     ```
-Alternatively, you may also provide with this configuration in your [custom](https://github.com/bitnami/bitnami-docker-redis-sentinel#configuration-file) configuration file.
+Alternatively, you may also provide with this configuration in your [custom](https://github.com/drycc-addons/drycc-docker-redis-sentinel#configuration-file) configuration file.
 
 ### Configuration file
 
-The image looks for configurations in `/bitnami/redis-sentinel/conf/`. You can mount a volume at `/bitnami` and copy/edit the configurations in the `/path/to/redis-persistence/redis-sentinel/conf/`. The default configurations will be populated to the `conf/` directory if it's empty.
+The image looks for configurations in `/quay.io/drycc-addons/redis-sentinel/conf/`. You can mount a volume at `/bitnami` and copy/edit the configurations in the `/path/to/redis-persistence/redis-sentinel/conf/`. The default configurations will be populated to the `conf/` directory if it's empty.
 
 #### Step 1: Run the Redis(TM) Sentinel image
 
@@ -252,18 +251,18 @@ Run the Redis(TM) Sentinel image, mounting a directory from your host.
 ```console
 $ docker run --name redis-sentinel \
     -e REDIS_MASTER_HOST=redis \
-    -v /path/to/redis-sentinel/persistence:/bitnami \
+    -v /path/to/redis-sentinel/persistence:/drycc \
     quay.io/drycc-addons/redis-sentinel:[TAG]
 ```
 
-You can also modify the [`docker-compose.yml`](https://github.com/bitnami/bitnami-docker-redis-sentinel/blob/master/docker-compose.yml) file present in this repository:
+You can also modify the [`docker-compose.yml`](https://github.com/drycc-addons/drycc-docker-redis-sentinel/blob/main/docker-compose.yml) file present in this repository:
 
 ```yaml
 services:
   redis-sentinel:
   ...
     volumes:
-      - /path/to/redis-persistence:/bitnami
+      - /path/to/redis-persistence:/drycc
   ...
 ```
 
